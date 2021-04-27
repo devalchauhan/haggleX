@@ -70,12 +70,13 @@ class SearchTextField extends StatelessWidget {
     Key key,
     @required this.controller,
     this.hintText,
-    this.focusNode,
+    this.focusNode, this.onTextChange,
   }) : super(key: key);
 
   final TextEditingController controller;
   final String hintText;
   final FocusNode focusNode;
+  final Function onTextChange;
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +91,7 @@ class SearchTextField extends StatelessWidget {
           color: kColorWhite,
         ),
       ),
+      onChanged: onTextChange,
       style: kTextStyle,
     );
   }
