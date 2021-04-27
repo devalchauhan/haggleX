@@ -54,7 +54,9 @@ class CompleteSetupPage extends StatelessWidget {
             right: 30.0,
             child: LoginGoldenButton(
               btnText: 'START EXPLORING',
-              onClick: () {},
+              onClick: () {
+                Navigator.pushReplacementNamed(context, MAIN_ROUTE);
+              },
             ),
           )
         ],

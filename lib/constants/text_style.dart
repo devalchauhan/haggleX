@@ -12,6 +12,12 @@ const kTextStyle = TextStyle(
   fontFamily: kFontBasisGrotesque,
   fontWeight: FontWeight.bold,
 );
+const kTextStyleNormal = TextStyle(
+  color: kColorBlack,
+  fontSize: 20.0,
+  fontFamily: kFontBasisGrotesque,
+  fontWeight: FontWeight.normal,
+);
 
 const kLoginHintTextStyle = TextStyle(
   color: kColorWhite,

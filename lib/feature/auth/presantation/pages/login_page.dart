@@ -22,7 +22,7 @@ class LoginPage extends StatelessWidget {
       body: BlocListener<LoginCubit, LoginState>(
         listener: (context, state) {
           if (state is LoggedIn) {
-            Navigator.pushReplacementNamed(context, DASHBOARD_ROUTE);
+            Navigator.pushReplacementNamed(context, MAIN_ROUTE);
           } else if (state is LoginProcessing) {
             emailFocusNode.unfocus();
             passwordFocusNode.unfocus();

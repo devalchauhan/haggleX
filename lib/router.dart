@@ -7,7 +7,7 @@ import 'package:hagglex/feature/auth/presantation/pages/registartion_page.dart';
 
 import 'feature/auth/presantation/pages/complete_setup_page.dart';
 import 'feature/auth/presantation/pages/verification_page.dart';
-import 'feature/dashboard/presantation/dashboard_page.dart';
+import 'feature/dashboard/presantation/pages/main_page.dart';
 
 class AppRouter {
   Route generateRoute(RouteSettings routeSettings) {
@@ -22,8 +22,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => VerificationPage());
       case COMPLETE_SETUP_ROUTE:
         return MaterialPageRoute(builder: (_) => CompleteSetupPage());
-      case DASHBOARD_ROUTE:
-        return MaterialPageRoute(builder: (_) => DashBoardPage());
+      case MAIN_ROUTE:
+        return MaterialPageRoute(builder: (_) => MainPage());
       case COUNTRIES_ROUTE:
         return PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) =>
