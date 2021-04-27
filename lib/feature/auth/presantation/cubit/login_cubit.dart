@@ -10,10 +10,9 @@ class LoginCubit extends Cubit<LoginState> {
 
   LoginCubit({this.login}) : super(LoginInitial());
 
-  Future<void> callLogin(LoginParams loginParams) async {
+  void callLogin(LoginParams loginParams) async {
     emit(LoginProcessing());
     final loginFailedOrSuccess = await login(loginParams);
-    var error;
     loginFailedOrSuccess.fold(
       (l) {
         final failure = l as AuthFailure;

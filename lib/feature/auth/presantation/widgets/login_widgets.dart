@@ -6,7 +6,8 @@ class LoginTextField extends StatelessWidget {
   const LoginTextField({
     Key key,
     @required this.controller,
-    this.hintText, this.focusNode,
+    this.hintText,
+    this.focusNode,
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -20,6 +21,54 @@ class LoginTextField extends StatelessWidget {
       cursorColor: kColorWhite,
       controller: controller,
       decoration: kInputDecorationLogin.copyWith(hintText: hintText),
+      style: kTextStyle,
+    );
+  }
+}
+
+
+class LoginPasswordField extends StatefulWidget {
+  const LoginPasswordField({
+    Key key,
+    @required this.controller,
+    this.hintText,
+    this.focusNode,
+  }) : super(key: key);
+
+  final TextEditingController controller;
+  final String hintText;
+  final FocusNode focusNode;
+
+  @override
+  _LoginPasswordFieldState createState() => _LoginPasswordFieldState();
+}
+
+class _LoginPasswordFieldState extends State<LoginPasswordField> {
+  bool _passwordVisible = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      focusNode: widget.focusNode,
+      cursorColor: kColorWhite,
+      obscureText: !_passwordVisible,
+      controller: widget.controller,
+      decoration: kInputDecorationLogin.copyWith(
+        hintText: widget.hintText,
+        suffixIcon: IconButton(
+          icon: Icon(
+            // Based on passwordVisible state choose the icon
+            _passwordVisible ? Icons.visibility : Icons.visibility_off,
+            color: Theme.of(context).primaryColorDark,
+          ),
+          onPressed: () {
+            // Update the state i.e. toogle the state of passwordVisible variable
+            setState(() {
+              _passwordVisible = !_passwordVisible;
+            });
+          },
+        ),
+      ),
       style: kTextStyle,
     );
   }

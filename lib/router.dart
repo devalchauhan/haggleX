@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hagglex/constants/string.dart';
 import 'package:hagglex/core/presentation/pages/splash_page.dart';
+import 'package:hagglex/feature/auth/presantation/pages/countries_page.dart';
 import 'package:hagglex/feature/auth/presantation/pages/login_page.dart';
 import 'package:hagglex/feature/auth/presantation/pages/registartion_page.dart';
 
@@ -23,6 +24,24 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => CompleteSetupPage());
       case DASHBOARD_ROUTE:
         return MaterialPageRoute(builder: (_) => DashBoardPage());
+      case COUNTRIES_ROUTE:
+        return PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              CountriesPage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            var begin = Offset(0.0, 1.0);
+            var end = Offset.zero;
+            var curve = Curves.ease;
+
+            var tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            );
+          },
+        );
       default:
         return null;
     }

@@ -5,6 +5,7 @@ import 'package:hagglex/feature/auth/presantation/cubit/login_cubit.dart';
 import 'package:hagglex/router.dart';
 
 import 'constants/appMainColor.dart';
+import 'feature/auth/presantation/cubit/registration_cubit.dart';
 import 'injenction_container.dart' as di;
 import 'injenction_container.dart';
 
@@ -15,6 +16,7 @@ void main() async {
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider(create: (context) => sl<LoginCubit>()),
+      BlocProvider(create: (context) => sl<RegistrationCubit>()),
     ],
     child: HagglexApp(
       router: AppRouter(),

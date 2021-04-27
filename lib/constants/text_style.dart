@@ -50,6 +50,28 @@ const kInputDecorationLogin = InputDecoration(
   ),
 );
 
+const kInputDecorationSearch = InputDecoration(
+  fillColor: kColorWhite20,
+  hintStyle: kLoginHintTextStyle,
+  isDense: true,
+  contentPadding:
+      EdgeInsets.only(bottom: 5.0, left: 30.0, right: 30.0, top: 10.0),
+  enabledBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(30.0)),
+    borderSide: BorderSide(color: Colors.transparent, width: 2),
+  ),
+  focusedBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(30.0)),
+    borderSide: BorderSide(color: Colors.transparent),
+  ),
+  border: OutlineInputBorder(
+    borderRadius: BorderRadius.all(
+      Radius.circular(30.0),
+    ),
+  ),
+  filled: true,
+);
+
 const kInputDecorationRegistration = InputDecoration(
   hintStyle: kRegistrationHintTextStyle,
   isDense: true,

@@ -25,6 +25,7 @@ class LoginPage extends StatelessWidget {
             Navigator.pushReplacementNamed(context, DASHBOARD_ROUTE);
           } else if (state is LoginProcessing) {
             emailFocusNode.unfocus();
+            passwordFocusNode.unfocus();
           } else if (state is LoginError) {
             Toast.show(state.error, context,
                 duration: 3,
@@ -49,14 +50,15 @@ class LoginPage extends StatelessWidget {
                     height: 40.0,
                   ),
                   LoginTextField(
+                    focusNode: emailFocusNode,
                     controller: emailController,
                     hintText: 'Email Address',
                   ),
                   SizedBox(
                     height: 20.0,
                   ),
-                  LoginTextField(
-                    focusNode: emailFocusNode,
+                  LoginPasswordField(
+                    focusNode: passwordFocusNode,
                     controller: passwordController,
                     hintText: 'Password (Min. 8 characters)',
                   ),

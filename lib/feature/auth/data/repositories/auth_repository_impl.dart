@@ -7,6 +7,7 @@ import 'package:hagglex/feature/auth/data/datasource/auth_remote_datasource.dart
 import 'package:hagglex/feature/auth/data/model/auth_user_model.dart';
 import 'package:hagglex/feature/auth/domain/entities/auth_user.dart';
 import 'package:hagglex/feature/auth/domain/entities/login_user.dart';
+import 'package:hagglex/feature/auth/domain/entities/register_user.dart';
 import 'package:hagglex/feature/auth/domain/repository/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository{
@@ -31,9 +32,13 @@ class AuthRepositoryImpl implements AuthRepository{
   }
 
   @override
-  Future<Either<Failure, AuthUser>> register() {
-    // TODO: implement register
-    throw UnimplementedError();
+  Future<Either<Failure, AuthUser>> register(RegisterUser registerUser) async {
+    try {
+      final AuthUserModel _currentUser = await authRemoteDataSource.register(registerUser);
+      return Right(_currentUser);
+    } catch(e) {
+      return Left(AuthFailure(error: e.error));
+    }
   }
 
   @override
