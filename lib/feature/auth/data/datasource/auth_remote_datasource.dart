@@ -68,10 +68,48 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
       // final repositories = result.data['action']['user']['username'];
       // print(repositories);
-      return Future.value(AuthUserModel.fromJson(result.data));
+      AuthUserModel authUserModel = AuthUserModel.fromJson(result.data);
+      sendVerificationCode(authUserModel.email, authUserModel.token);
+      return Future.value(authUserModel);
     } catch (e) {
       throw AuthException(error: e.error);
     }
+  }
+
+  Future<void> sendVerificationCode(String email, String token) async {
+    const String sendVerification = r'''
+      query SendCode($data: RedisVerifyCodeInput) {
+         getRedisVerifyCode(data:$data)
+      }
+      ''';
+    final variable = {
+      "data": {
+        "email": email,
+      }
+    };
+
+    final _httpLink = HttpLink(
+      URL,
+    );
+
+    final _authLink = AuthLink(
+      getToken: () async => 'Bearer $token',
+    );
+
+    Link _link = _authLink.concat(_httpLink);
+
+    final GraphQLClient client =
+        GraphQLClient(cache: GraphQLCache(store: HiveStore()), link: _link);
+    final QueryOptions options = QueryOptions(
+      document: gql(sendVerification),
+      variables: variable,
+    );
+    final QueryResult result = await client.query(options);
+
+    if (result.hasException) {
+      print(result.exception.toString());
+    }
+    print(result.data);
   }
 
   @override
