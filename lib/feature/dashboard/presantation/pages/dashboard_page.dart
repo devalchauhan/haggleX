@@ -137,8 +137,7 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
+        child: ListView(
           children: [
             Header(),
             Container(
@@ -146,99 +145,99 @@ class DashboardPage extends StatelessWidget {
               child: _buildCarousel(context, 4),
               padding: EdgeInsets.symmetric(vertical: 8.0),
             ),
-            Expanded(
-              child: Container(
-                color: kColorWhite,
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  children: [
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      margin: EdgeInsets.only(left: 20.0, top: 20.0),
-                      child: Text(
-                        'Markets',
-                        style: kTextStyle.copyWith(color: kColorBlack),
+            Container(
+              color: kColorWhite,
+              width: MediaQuery.of(context).size.width,
+              height: 550,
+              child: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    margin: EdgeInsets.only(left: 20.0, top: 20.0),
+                    child: Text(
+                      'Markets',
+                      style: kTextStyle.copyWith(color: kColorBlack),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      color: kColorWhite,
+                      padding: EdgeInsets.all(10.0),
+                      child: ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: coins.length,
+                        itemBuilder: (context, index) {
+                          Coin coin = coins[index];
+                          return CoinPriceCell(coin: coin);
+                        },
                       ),
                     ),
-                    Expanded(
-                      child: Container(
-                        color: kColorWhite,
-                        padding: EdgeInsets.all(10.0),
-                        child: ListView.builder(
-                          itemCount: coins.length,
-                          itemBuilder: (context, index) {
-                            Coin coin = coins[index];
-                            return CoinPriceCell(coin: coin);
-                          },
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+                  )
+                ],
               ),
             ),
-            Expanded(
-              child: Container(
-                color: kColorWhite,
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  children: [
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      margin: EdgeInsets.only(left: 20.0, top: 20.0),
-                      child: Text(
-                        'Do more with HaggleX',
-                        style: kTextStyle.copyWith(color: kColorBlack),
+            Container(
+              height: 450.0,
+              color: kColorWhite,
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    margin: EdgeInsets.only(left: 20.0, top: 20.0),
+                    child: Text(
+                      'Do more with HaggleX',
+                      style: kTextStyle.copyWith(color: kColorBlack),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      color: kColorWhite,
+                      padding: EdgeInsets.all(10.0),
+                      child: ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: doMores.length,
+                        itemBuilder: (context, index) {
+                          DoMore doMore = doMores[index];
+                          return DoMoreCell(doMore: doMore);
+                        },
                       ),
                     ),
-                    Expanded(
-                      child: Container(
-                        color: kColorWhite,
-                        padding: EdgeInsets.all(10.0),
-                        child: ListView.builder(
-                          itemCount: doMores.length,
-                          itemBuilder: (context, index) {
-                            DoMore doMore = doMores[index];
-                            return DoMoreCell(doMore: doMore);
-                          },
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+                  )
+                ],
               ),
             ),
-            Expanded(
-              child: Container(
-                color: kColorWhite,
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  children: [
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      margin: EdgeInsets.only(left: 20.0, top: 20.0),
-                      child: Text(
-                        'Trending crypto news',
-                        style: kTextStyle.copyWith(color: kColorBlack),
+            Container(
+              color: kColorWhite,
+              width: MediaQuery.of(context).size.width,
+              height: 500,
+              child: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    margin: EdgeInsets.only(left: 20.0, top: 20.0),
+                    child: Text(
+                      'Trending crypto news',
+                      style: kTextStyle.copyWith(color: kColorBlack),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      color: kColorWhite,
+                      padding: EdgeInsets.all(10.0),
+                      child: ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: news.length,
+                        itemBuilder: (context, index) {
+                          News nws = news[index];
+                          return NewsCell(
+                            news: nws,
+                          );
+                        },
                       ),
                     ),
-                    Expanded(
-                      child: Container(
-                        color: kColorWhite,
-                        padding: EdgeInsets.all(10.0),
-                        child: ListView.builder(
-                          itemCount: news.length,
-                          itemBuilder: (context, index) {
-                            News nws = news[index];
-                            return NewsCell(
-                              news: nws,
-                            );
-                          },
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+                  )
+                ],
               ),
             ),
           ],
