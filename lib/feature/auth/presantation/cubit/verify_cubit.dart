@@ -20,7 +20,7 @@ class VerifyCubit extends Cubit<VerifyState> {
 
   void callResendCode(VerifyParams verifyParams) async {
     VerifyUser verifyUser = verifyParams.verifyUser;
-    emit(VerifyProcessing());
+    //emit(VerifyProcessing());
     final verifyFailedOrSuccess = await resendCode(verifyParams);
     verifyFailedOrSuccess.fold(
       (l) {

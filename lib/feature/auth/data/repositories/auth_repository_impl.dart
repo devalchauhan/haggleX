@@ -53,8 +53,13 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, AuthUser>> resendCode(VerifyUser verifyUser) {
-    // TODO: implement resendCode
-    throw UnimplementedError();
+  Future<Either<Failure, AuthUser>> resendCode(VerifyUser verifyUser) async {
+    try {
+      final AuthUserModel _currentUser =
+          await authRemoteDataSource.resendVerificationCode(verifyUser);
+      return Right(_currentUser);
+    } catch (e) {
+      return Left(AuthFailure(error: e.error));
+    }
   }
 }
