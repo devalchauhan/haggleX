@@ -2,7 +2,7 @@
     package="com.example.hagglex">
    <application
         android:label="hagglex"
-        android:icon="@drawable/ic_launcher">
+        android:icon="@mip/ic_launcher">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
