@@ -1,12 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:hagglex/constants/color.dart';
-import 'package:hagglex/constants/string.dart';
 import 'package:hagglex/constants/text_style.dart';
 import 'package:hagglex/core/presentation/widget/background.dart';
-import 'package:hagglex/feature/auth/presantation/widgets/login_widgets.dart';
-import 'package:hagglex/feature/auth/presantation/widgets/registration_widgets.dart';
 import 'package:hagglex/feature/dashboard/presantation/pages/cryptosave_page.dart';
 import 'package:hagglex/feature/dashboard/presantation/pages/dashboard_page.dart';
 import 'package:hagglex/feature/dashboard/presantation/pages/more_page.dart';

@@ -70,7 +70,8 @@ class SearchTextField extends StatelessWidget {
     Key key,
     @required this.controller,
     this.hintText,
-    this.focusNode, this.onTextChange,
+    this.focusNode,
+    this.onTextChange,
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -179,7 +180,7 @@ class _RegistrationBodyState extends State<RegistrationBody> {
                 },
                 child: Image.asset(
                   'assets/images/back_button.png',
-                  height: 35.0,
+                  height: 40.0,
                   width: 45.0,
                 ),
               ),
@@ -238,7 +239,7 @@ class _RegistrationBodyState extends State<RegistrationBody> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Expanded(
-                          flex: 3,
+                          flex: 4,
                           child: InkWell(
                             onTap: () async {
                               // Navigator.of(context).push(_createRoute());
@@ -281,7 +282,7 @@ class _RegistrationBodyState extends State<RegistrationBody> {
                           ),
                         ),
                         Expanded(
-                          flex: 7,
+                          flex: 6,
                           child: Container(
                             margin: EdgeInsets.only(left: 10.0),
                             child: RegistrationTextField(

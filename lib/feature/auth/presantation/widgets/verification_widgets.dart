@@ -88,7 +88,10 @@ class VerificationBody extends StatelessWidget {
                     ),
                     RegistrationGradientButton(
                       onClick: () {
-                        BlocProvider.of<VerifyCubit>(context).callVerify(VerifyParams(verifyUser: VerifyUser(email: email,code: codeController.text)));
+                        BlocProvider.of<VerifyCubit>(context).callVerify(
+                            VerifyParams(
+                                verifyUser: VerifyUser(
+                                    email: email, code: codeController.text)));
                       },
                       btnText: 'VERIFY ME',
                     ),
@@ -105,13 +108,16 @@ class VerificationBody extends StatelessWidget {
                     SizedBox(
                       height: 50.0,
                     ),
-                    Text(
-                      'Resend Code',
-                      textAlign: TextAlign.center,
-                      style: kTextStyle.copyWith(
-                        fontSize: 15.0,
-                        color: kColorBlack,
-                        decoration: TextDecoration.underline,
+                    GestureDetector(
+                      onTap: () {},
+                      child: Text(
+                        'Resend Code',
+                        textAlign: TextAlign.center,
+                        style: kTextStyle.copyWith(
+                          fontSize: 15.0,
+                          color: kColorBlack,
+                          decoration: TextDecoration.underline,
+                        ),
                       ),
                     ),
                   ],

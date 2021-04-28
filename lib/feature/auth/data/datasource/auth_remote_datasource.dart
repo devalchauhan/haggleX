@@ -110,9 +110,47 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     final QueryResult result = await client.query(options);
 
     if (result.hasException) {
-      print(result.exception.toString());
+      print('devaldevalerror ${result.exception.toString()}');
     }
-    print(result.data);
+    print('devaldevalresult: ${result.data}');
+  }
+
+  Future<void> resendVerificationCode(String email, String token) async {
+    const String resendVerification = r'''
+      query ResendCode($data: EmailInput!) {
+         resendVerificationCode(data:$data)
+      }
+      ''';
+    final variable = {
+      "data": {
+        "email": email,
+      }
+    };
+
+    final _httpLink = HttpLink(
+      URL,
+    );
+
+    final _authLink = AuthLink(
+      getToken: () async => 'Bearer $token',
+    );
+
+    Link _link = _authLink.concat(_httpLink);
+
+    final GraphQLClient client = GraphQLClient(
+      cache: GraphQLCache(store: HiveStore()),
+      link: _link,
+    );
+    final QueryOptions options = QueryOptions(
+      document: gql(resendVerification),
+      variables: variable,
+    );
+    final QueryResult result = await client.query(options);
+
+    if (result.hasException) {
+      print('devaldevalerror ${result.exception.toString()}');
+    }
+    print('devaldevalresult: ${result.data}');
   }
 
   @override
@@ -212,7 +250,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         final gqlErrors = result.exception.graphqlErrors;
         if (gqlErrors != null) if (gqlErrors.length > 0)
           throw AuthException(error: gqlErrors.first.message);
-        throw AuthException(error: 'Something went wrong');
+        //throw AuthException(error: 'Something went wrong');
       }
 
       print(result.data);
