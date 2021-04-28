@@ -8,27 +8,33 @@ import 'package:meta/meta.dart';
 
 part 'registration_state.dart';
 
+const String empty_email = 'Please enter email';
+const String invalid_email = 'Please enter valid email';
+const String invalid_password = "Password must be 8 character long";
+const String empty_username = "Username is empty";
+const String empty_phonenumber = "Phone number is empty";
+
 class RegistrationCubit extends Cubit<RegistrationState> {
   final Register register;
 
   RegistrationCubit({this.register}) : super(RegistrationInitial());
 
   void callRegister(RegisterParams registerParams) async {
-    RegisterUser registerUser =registerParams.registerUser;
+    RegisterUser registerUser = registerParams.registerUser;
     if (registerUser.email.isEmpty) {
-      emit(RegistrationError(error: "Email is empty"));
+      emit(RegistrationError(error: empty_email));
       return;
-    }else if(!RegExp(EMAIL_REGEX).hasMatch(registerUser.email)){
-      emit(RegistrationError(error: "Email invalid"));
+    } else if (!RegExp(EMAIL_REGEX).hasMatch(registerUser.email)) {
+      emit(RegistrationError(error: invalid_email));
       return;
-    }else if(registerUser.password.length<8){
-      emit(RegistrationError(error: "Password must be 8 character long"));
+    } else if (registerUser.password.length < 8) {
+      emit(RegistrationError(error: invalid_password));
       return;
-    }else if(registerUser.username.isEmpty){
-      emit(RegistrationError(error: "Username is empty"));
+    } else if (registerUser.username.isEmpty) {
+      emit(RegistrationError(error: empty_username));
       return;
-    }else if(registerUser.phonenumber.isEmpty){
-      emit(RegistrationError(error: "Phone number is empty"));
+    } else if (registerUser.phonenumber.isEmpty) {
+      emit(RegistrationError(error: empty_phonenumber));
       return;
     }
     emit(RegistrationProcessing());

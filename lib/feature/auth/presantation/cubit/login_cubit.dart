@@ -6,6 +6,10 @@ import 'package:meta/meta.dart';
 
 part 'login_state.dart';
 
+const String empty_email = 'Please enter email';
+const String invalid_email = 'Please enter valid email';
+const String empty_password = 'Please enter password';
+
 class LoginCubit extends Cubit<LoginState> {
   final Login login;
 
@@ -13,11 +17,11 @@ class LoginCubit extends Cubit<LoginState> {
 
   void callLogin(LoginParams loginParams) async {
     if (loginParams.loginUser.email.isEmpty) {
-      emit(LoginError(error: 'Please enter email'));
+      emit(LoginError(error: empty_email));
     } else if (!RegExp(EMAIL_REGEX).hasMatch(loginParams.loginUser.email)) {
-      emit(LoginError(error: 'Please enter valid email'));
+      emit(LoginError(error: invalid_email));
     } else if (loginParams.loginUser.password.isEmpty) {
-      emit(LoginError(error: 'Please enter password'));
+      emit(LoginError(error: empty_password));
     }
     emit(LoginProcessing());
     final loginFailedOrSuccess = await login(loginParams);

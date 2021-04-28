@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:hagglex/core/error/failures/failure.dart';
 import 'package:hagglex/feature/auth/data/model/auth_user_model.dart';
@@ -8,6 +6,8 @@ import 'package:hagglex/feature/auth/domain/usecases/verify.dart';
 import 'package:meta/meta.dart';
 
 part 'verify_state.dart';
+
+const String empty_code = 'Please enter Code';
 
 class VerifyCubit extends Cubit<VerifyState> {
   final Verify verify;
@@ -18,7 +18,7 @@ class VerifyCubit extends Cubit<VerifyState> {
   void callVerify(VerifyParams verifyParams) async {
     VerifyUser verifyUser = verifyParams.verifyUser;
     if (verifyUser.code.isEmpty) {
-      emit(VerifyError(error: "Code is empty"));
+      emit(VerifyError(error: empty_code));
       return;
     }
     emit(VerifyProcessing());

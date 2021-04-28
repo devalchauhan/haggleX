@@ -4,7 +4,6 @@ import 'package:hagglex/core/presentation/pages/splash_page.dart';
 import 'package:hagglex/feature/auth/presantation/pages/countries_page.dart';
 import 'package:hagglex/feature/auth/presantation/pages/login_page.dart';
 import 'package:hagglex/feature/auth/presantation/pages/registartion_page.dart';
-
 import 'feature/auth/presantation/pages/complete_setup_page.dart';
 import 'feature/auth/presantation/pages/verification_page.dart';
 import 'feature/dashboard/presantation/pages/main_page.dart';

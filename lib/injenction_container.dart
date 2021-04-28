@@ -6,7 +6,6 @@ import 'package:hagglex/feature/auth/domain/usecases/verify.dart';
 import 'package:hagglex/feature/auth/presantation/cubit/login_cubit.dart';
 import 'package:hagglex/feature/auth/presantation/cubit/registration_cubit.dart';
 import 'package:hagglex/feature/auth/presantation/cubit/verify_cubit.dart';
-
 import 'feature/auth/domain/usecases/login.dart';
 import 'feature/auth/domain/usecases/register.dart';
 

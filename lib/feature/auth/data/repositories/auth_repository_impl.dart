@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:hagglex/core/error/exceptions/exceptions.dart';
 import 'package:hagglex/core/error/failures/failure.dart';
 import 'package:hagglex/feature/auth/data/datasource/auth_remote_datasource.dart';
 import 'package:hagglex/feature/auth/data/model/auth_user_model.dart';

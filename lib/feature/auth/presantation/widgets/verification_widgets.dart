@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hagglex/constants/color.dart';
-import 'package:hagglex/constants/string.dart';
 import 'package:hagglex/constants/text_style.dart';
 import 'package:hagglex/feature/auth/domain/entities/verify_user.dart';
 import 'package:hagglex/feature/auth/domain/usecases/verify.dart';
