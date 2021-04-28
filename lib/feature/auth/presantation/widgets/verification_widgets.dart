@@ -108,7 +108,10 @@ class VerificationBody extends StatelessWidget {
                       height: 50.0,
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        BlocProvider.of<VerifyCubit>(context).callResendCode(
+                            VerifyParams(verifyUser: VerifyUser(email: email)));
+                      },
                       child: Text(
                         'Resend Code',
                         textAlign: TextAlign.center,

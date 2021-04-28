@@ -51,4 +51,10 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(AuthFailure(error: e.error));
     }
   }
+
+  @override
+  Future<Either<Failure, AuthUser>> resendCode(VerifyUser verifyUser) {
+    // TODO: implement resendCode
+    throw UnimplementedError();
+  }
 }

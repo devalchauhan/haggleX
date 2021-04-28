@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:hagglex/core/error/failures/failure.dart';
 import 'package:hagglex/feature/auth/data/model/auth_user_model.dart';
 import 'package:hagglex/feature/auth/domain/entities/verify_user.dart';
+import 'package:hagglex/feature/auth/domain/usecases/resendCode.dart';
 import 'package:hagglex/feature/auth/domain/usecases/verify.dart';
 import 'package:meta/meta.dart';
 
@@ -11,10 +14,23 @@ const String empty_code = 'Please enter Code';
 
 class VerifyCubit extends Cubit<VerifyState> {
   final Verify verify;
+  final ResendCode resendCode;
 
-  VerifyCubit({this.verify}) : super(VerifyInitial());
+  VerifyCubit({this.verify, this.resendCode}) : super(VerifyInitial());
 
-  void callResendCode(VerifyParams verifyParams) async {}
+  void callResendCode(VerifyParams verifyParams) async {
+    VerifyUser verifyUser = verifyParams.verifyUser;
+    emit(VerifyProcessing());
+    final verifyFailedOrSuccess = await resendCode(verifyParams);
+    verifyFailedOrSuccess.fold(
+      (l) {
+        final failure = l as AuthFailure;
+        emit(VerifyError(error: failure.error));
+      },
+      (r) => emit(ResendSuccess()),
+    );
+  }
+
   void callVerify(VerifyParams verifyParams) async {
     VerifyUser verifyUser = verifyParams.verifyUser;
     if (verifyUser.code.isEmpty) {
@@ -23,16 +39,16 @@ class VerifyCubit extends Cubit<VerifyState> {
     }
     emit(VerifyProcessing());
 
-    /*Timer(Duration(seconds: 2), () {
+    Timer(Duration(seconds: 2), () {
       emit(Verified());
-    });*/
-    final verifyFailedOrSuccess = await verify(verifyParams);
+    });
+    /*final verifyFailedOrSuccess = await verify(verifyParams);
     verifyFailedOrSuccess.fold(
       (l) {
         final failure = l as AuthFailure;
         emit(VerifyError(error: failure.error));
       },
       (r) => emit(Verified(authUserModel: r)),
-    );
+    );*/
   }
 }

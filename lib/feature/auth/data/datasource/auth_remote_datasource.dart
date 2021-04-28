@@ -18,6 +18,7 @@ abstract class AuthRemoteDataSource {
 
   /// Throws a [DataBaseException] for all error codes.
   Future<AuthUserModel> verify(VerifyUser verifyUser);
+  Future<AuthUserModel> resendVerificationCode(VerifyUser verifyUser);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -115,7 +116,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     print('devaldevalresult: ${result.data}');
   }
 
-  Future<void> resendVerificationCode(String email, String token) async {
+  Future<AuthUserModel> resendVerificationCode(VerifyUser verifyUser) async {
     const String resendVerification = r'''
       query ResendCode($data: EmailInput!) {
          resendVerificationCode(data:$data)
@@ -123,24 +124,24 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       ''';
     final variable = {
       "data": {
-        "email": email,
+        "email": verifyUser.email,
       }
     };
 
-    final _httpLink = HttpLink(
+    /*final _httpLink = HttpLink(
       URL,
     );
 
-    final _authLink = AuthLink(
+    /*final _authLink = AuthLink(
       getToken: () async => 'Bearer $token',
-    );
+    );*/
 
-    Link _link = _authLink.concat(_httpLink);
+    //Link _link = _authLink.concat(_httpLink);
 
     final GraphQLClient client = GraphQLClient(
       cache: GraphQLCache(store: HiveStore()),
       link: _link,
-    );
+    );*/
     final QueryOptions options = QueryOptions(
       document: gql(resendVerification),
       variables: variable,
@@ -148,9 +149,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     final QueryResult result = await client.query(options);
 
     if (result.hasException) {
-      print('devaldevalerror ${result.exception.toString()}');
+      print('devaldevalerrorresend ${result.exception.toString()}');
     }
-    print('devaldevalresult: ${result.data}');
+    print('devaldevalresultresend: ${result.data}');
   }
 
   @override
