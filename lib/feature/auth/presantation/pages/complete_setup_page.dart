@@ -55,7 +55,8 @@ class CompleteSetupPage extends StatelessWidget {
             child: LoginGoldenButton(
               btnText: 'START EXPLORING',
               onClick: () {
-                Navigator.pushReplacementNamed(context, MAIN_ROUTE);
+                Navigator.pushNamedAndRemoveUntil(
+                    context, MAIN_ROUTE, (r) => false);
               },
             ),
           )
