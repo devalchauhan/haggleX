@@ -6,6 +6,7 @@ import 'package:hagglex/router.dart';
 
 import 'constants/appMainColor.dart';
 import 'feature/auth/presantation/cubit/registration_cubit.dart';
+import 'feature/auth/presantation/cubit/verify_cubit.dart';
 import 'injenction_container.dart' as di;
 import 'injenction_container.dart';
 
@@ -17,6 +18,7 @@ void main() async {
     providers: [
       BlocProvider(create: (context) => sl<LoginCubit>()),
       BlocProvider(create: (context) => sl<RegistrationCubit>()),
+      BlocProvider(create: (context) => sl<VerifyCubit>()),
     ],
     child: HagglexApp(
       router: AppRouter(),

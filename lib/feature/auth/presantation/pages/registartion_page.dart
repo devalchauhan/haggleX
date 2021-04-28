@@ -13,20 +13,27 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocListener<RegistrationCubit, RegistrationState>(
         listener: (context, state) {
           if (state is Registered) {
-            Navigator.pushReplacementNamed(context, VERIFICATION_ROUTE);
+            Navigator.pushReplacementNamed(context, VERIFICATION_ROUTE,
+                arguments: state.authUserModel.email);
           } else if (state is RegistrationProcessing) {
+            isLoading = true;
             CoolAlert.show(
               context: context,
               type: CoolAlertType.loading,
             );
           } else if (state is RegistrationError) {
-            Navigator.pop(context);
+            if (isLoading) {
+              Navigator.pop(context);
+              isLoading = false;
+            }
             CoolAlert.show(
               context: context,
               type: CoolAlertType.error,

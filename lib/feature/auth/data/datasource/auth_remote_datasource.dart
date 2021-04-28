@@ -4,6 +4,7 @@ import 'package:hagglex/core/error/exceptions/exceptions.dart';
 import 'package:hagglex/feature/auth/data/model/auth_user_model.dart';
 import 'package:hagglex/feature/auth/domain/entities/login_user.dart';
 import 'package:hagglex/feature/auth/domain/entities/register_user.dart';
+import 'package:hagglex/feature/auth/domain/entities/verify_user.dart';
 
 abstract class AuthRemoteDataSource {
   /// Throws a [AuthException] for all error codes.
@@ -16,7 +17,7 @@ abstract class AuthRemoteDataSource {
   Future<AuthUserModel> register(RegisterUser registerUser);
 
   /// Throws a [DataBaseException] for all error codes.
-  Future<AuthUserModel> verify();
+  Future<AuthUserModel> verify(VerifyUser verifyUser);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -69,7 +70,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       // final repositories = result.data['action']['user']['username'];
       // print(repositories);
       AuthUserModel authUserModel = AuthUserModel.fromJson(result.data);
-      sendVerificationCode(authUserModel.email, authUserModel.token);
+
       return Future.value(authUserModel);
     } catch (e) {
       throw AuthException(error: e.error);
@@ -78,7 +79,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   Future<void> sendVerificationCode(String email, String token) async {
     const String sendVerification = r'''
-      query SendCode($data: RedisVerifyCodeInput) {
+      query SendCode($data: RedisVerifyCodeInput!) {
          getRedisVerifyCode(data:$data)
       }
       ''';
@@ -98,8 +99,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
     Link _link = _authLink.concat(_httpLink);
 
-    final GraphQLClient client =
-        GraphQLClient(cache: GraphQLCache(store: HiveStore()), link: _link);
+    final GraphQLClient client = GraphQLClient(
+      cache: GraphQLCache(store: HiveStore()),
+      link: _link,
+    );
     final QueryOptions options = QueryOptions(
       document: gql(sendVerification),
       variables: variable,
@@ -165,17 +168,59 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
 
       print(result.data);
-
-      // return Future.value(AuthUserModel.fromJson(result.data));
+      AuthUserModel authUserModel = AuthUserModel.fromJson(result.data);
+      sendVerificationCode(authUserModel.email, authUserModel.token);
+      return Future.value(authUserModel);
     } catch (e) {
       throw AuthException(error: e.error);
     }
   }
 
   @override
-  Future<AuthUserModel> verify() {
-    // TODO: implement verify
-    throw UnimplementedError();
+  Future<AuthUserModel> verify(VerifyUser verifyUser) async {
+    try {
+      print("Function call verify");
+
+      const String register = r'''
+        mutation Verify($data: VerifyUserInput!) {
+          action: verifyUser(data: $data) {
+                user{
+                  username
+                  email
+                  _id
+                  phonenumber
+                  phoneNumberDetails{
+                      phoneNumber
+                      callingCode
+                      flag
+                  }
+                }
+                token
+              }
+        }
+      ''';
+
+      final variable = {
+        "data": {
+          "code": verifyUser.code,
+        }
+      };
+
+      QueryResult result = await gqRequest(register, variable);
+      if (result.hasException) {
+        print(result.exception);
+        final gqlErrors = result.exception.graphqlErrors;
+        if (gqlErrors != null) if (gqlErrors.length > 0)
+          throw AuthException(error: gqlErrors.first.message);
+        throw AuthException(error: 'Something went wrong');
+      }
+
+      print(result.data);
+
+      return Future.value(AuthUserModel.fromJson(result.data));
+    } catch (e) {
+      throw AuthException(error: e.error);
+    }
   }
 
   Future<QueryResult> gqRequest(

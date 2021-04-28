@@ -1,5 +1,3 @@
-
-
 import 'package:dartz/dartz.dart';
 import 'package:hagglex/core/error/exceptions/exceptions.dart';
 import 'package:hagglex/core/error/failures/failure.dart';
@@ -8,9 +6,10 @@ import 'package:hagglex/feature/auth/data/model/auth_user_model.dart';
 import 'package:hagglex/feature/auth/domain/entities/auth_user.dart';
 import 'package:hagglex/feature/auth/domain/entities/login_user.dart';
 import 'package:hagglex/feature/auth/domain/entities/register_user.dart';
+import 'package:hagglex/feature/auth/domain/entities/verify_user.dart';
 import 'package:hagglex/feature/auth/domain/repository/auth_repository.dart';
 
-class AuthRepositoryImpl implements AuthRepository{
+class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource authRemoteDataSource;
 
   AuthRepositoryImpl({this.authRemoteDataSource});
@@ -24,9 +23,10 @@ class AuthRepositoryImpl implements AuthRepository{
   @override
   Future<Either<Failure, AuthUser>> login(LoginUser loginUser) async {
     try {
-      final AuthUserModel _currentUser = await authRemoteDataSource.login(loginUser);
+      final AuthUserModel _currentUser =
+          await authRemoteDataSource.login(loginUser);
       return Right(_currentUser);
-    } catch(e) {
+    } catch (e) {
       return Left(AuthFailure(error: e.error));
     }
   }
@@ -34,17 +34,22 @@ class AuthRepositoryImpl implements AuthRepository{
   @override
   Future<Either<Failure, AuthUser>> register(RegisterUser registerUser) async {
     try {
-      final AuthUserModel _currentUser = await authRemoteDataSource.register(registerUser);
+      final AuthUserModel _currentUser =
+          await authRemoteDataSource.register(registerUser);
       return Right(_currentUser);
-    } catch(e) {
+    } catch (e) {
       return Left(AuthFailure(error: e.error));
     }
   }
 
   @override
-  Future<Either<Failure, AuthUser>> verify() {
-    // TODO: implement verify
-    throw UnimplementedError();
+  Future<Either<Failure, AuthUser>> verify(VerifyUser verifyUser) async {
+    try {
+      final AuthUserModel _currentUser =
+          await authRemoteDataSource.verify(verifyUser);
+      return Right(_currentUser);
+    } catch (e) {
+      return Left(AuthFailure(error: e.error));
+    }
   }
-
 }

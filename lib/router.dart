@@ -19,7 +19,11 @@ class AppRouter {
       case REGISTRATION_ROUTE:
         return MaterialPageRoute(builder: (_) => RegistrationPage());
       case VERIFICATION_ROUTE:
-        return MaterialPageRoute(builder: (_) => VerificationPage());
+        final email = routeSettings.arguments;
+        return MaterialPageRoute(
+            builder: (_) => VerificationPage(
+                  email: email,
+                ));
       case COMPLETE_SETUP_ROUTE:
         return MaterialPageRoute(builder: (_) => CompleteSetupPage());
       case MAIN_ROUTE:
