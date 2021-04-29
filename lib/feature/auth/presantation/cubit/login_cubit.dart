@@ -18,10 +18,13 @@ class LoginCubit extends Cubit<LoginState> {
   void callLogin(LoginParams loginParams) async {
     if (loginParams.loginUser.email.isEmpty) {
       emit(LoginError(error: empty_email));
+      return;
     } else if (!RegExp(EMAIL_REGEX).hasMatch(loginParams.loginUser.email)) {
       emit(LoginError(error: invalid_email));
+      return;
     } else if (loginParams.loginUser.password.isEmpty) {
       emit(LoginError(error: empty_password));
+      return;
     }
     emit(LoginProcessing());
     final loginFailedOrSuccess = await login(loginParams);
