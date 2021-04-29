@@ -10,7 +10,6 @@ import 'package:hagglex/feature/auth/presantation/widgets/registration_widgets.d
 class VerificationBody extends StatelessWidget {
   final String email;
   final codeController = TextEditingController();
-  final codeFocusNode = FocusNode();
 
   VerificationBody({Key key, this.email}) : super(key: key);
 
@@ -80,7 +79,6 @@ class VerificationBody extends StatelessWidget {
                       height: 50.0,
                     ),
                     RegistrationTextField(
-                      focusNode: codeFocusNode,
                       controller: codeController,
                       hintText: 'Verification code',
                     ),
@@ -94,7 +92,7 @@ class VerificationBody extends StatelessWidget {
                         }
                         return RegistrationGradientButton(
                           onClick: () {
-                            codeFocusNode.unfocus();
+                            FocusScope.of(context).unfocus();
                             BlocProvider.of<VerifyCubit>(context).callVerify(
                                 VerifyParams(
                                     verifyUser: VerifyUser(

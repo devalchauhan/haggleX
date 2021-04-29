@@ -8,8 +8,6 @@ import 'package:hagglex/feature/auth/presantation/widgets/login_widgets.dart';
 import 'package:toast/toast.dart';
 
 class LoginPage extends StatelessWidget {
-  final emailFocusNode = FocusNode();
-  final passwordFocusNode = FocusNode();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -20,9 +18,6 @@ class LoginPage extends StatelessWidget {
         listener: (context, state) {
           if (state is LoggedIn) {
             Navigator.pushReplacementNamed(context, MAIN_ROUTE);
-          } else if (state is LoginProcessing) {
-            emailFocusNode.unfocus();
-            passwordFocusNode.unfocus();
           } else if (state is LoginError) {
             Toast.show(state.error, context,
                 duration: 3,
@@ -34,9 +29,7 @@ class LoginPage extends StatelessWidget {
           children: [
             Background(),
             LoginBody(
-                emailFocusNode: emailFocusNode,
                 emailController: emailController,
-                passwordFocusNode: passwordFocusNode,
                 passwordController: passwordController)
           ],
         ),

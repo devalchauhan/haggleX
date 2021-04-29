@@ -16,18 +16,15 @@ class RegistrationTextField extends StatelessWidget {
     @required this.controller,
     this.hintText,
     this.textInputType,
-    this.focusNode,
   }) : super(key: key);
 
   final TextEditingController controller;
   final String hintText;
   final TextInputType textInputType;
-  final FocusNode focusNode;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      focusNode: focusNode,
       keyboardType: textInputType,
       cursorColor: kColorBlack,
       controller: controller,
@@ -43,18 +40,15 @@ class RegistrationReferralTextField extends StatelessWidget {
     @required this.controller,
     this.hintText,
     this.textInputType,
-    this.focusNode,
   }) : super(key: key);
 
   final TextEditingController controller;
   final String hintText;
   final TextInputType textInputType;
-  final FocusNode focusNode;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      focusNode: focusNode,
       keyboardType: textInputType,
       cursorColor: kColorBlack,
       controller: controller,
@@ -154,11 +148,6 @@ class _RegistrationBodyState extends State<RegistrationBody> {
   final phoneNumberController = TextEditingController();
 
   final referralController = TextEditingController();
-  final emailFocusNode = FocusNode();
-  final passwordFocusNode = FocusNode();
-  final userNameFocusNode = FocusNode();
-  final phoneNumberFocusNode = FocusNode();
-  final referralFocusNode = FocusNode();
   Country country = Country(
       code: '234',
       flag: 'https://restcountries.eu/data/nga.svg',
@@ -209,7 +198,6 @@ class _RegistrationBodyState extends State<RegistrationBody> {
                       height: 20.0,
                     ),
                     RegistrationTextField(
-                      focusNode: emailFocusNode,
                       textInputType: TextInputType.emailAddress,
                       controller: emailController,
                       hintText: 'Email Address',
@@ -218,7 +206,6 @@ class _RegistrationBodyState extends State<RegistrationBody> {
                       height: 20.0,
                     ),
                     RegistrationTextField(
-                      focusNode: passwordFocusNode,
                       textInputType: TextInputType.text,
                       controller: passwordController,
                       hintText: 'Password (Min. 8 characters)',
@@ -227,7 +214,6 @@ class _RegistrationBodyState extends State<RegistrationBody> {
                       height: 20.0,
                     ),
                     RegistrationTextField(
-                      focusNode: userNameFocusNode,
                       textInputType: TextInputType.text,
                       controller: usernameController,
                       hintText: 'Create a username',
@@ -283,7 +269,6 @@ class _RegistrationBodyState extends State<RegistrationBody> {
                           child: Container(
                             margin: EdgeInsets.only(left: 10.0),
                             child: RegistrationTextField(
-                              focusNode: phoneNumberFocusNode,
                               textInputType: TextInputType.phone,
                               controller: phoneNumberController,
                               hintText: 'Enter your phone number',
@@ -296,7 +281,6 @@ class _RegistrationBodyState extends State<RegistrationBody> {
                       height: 20.0,
                     ),
                     RegistrationReferralTextField(
-                      focusNode: referralFocusNode,
                       textInputType: TextInputType.text,
                       controller: referralController,
                       hintText: 'Referral code (optional)',
@@ -320,11 +304,7 @@ class _RegistrationBodyState extends State<RegistrationBody> {
                         }
                         return RegistrationGradientButton(
                           onClick: () {
-                            emailFocusNode.unfocus();
-                            passwordFocusNode.unfocus();
-                            userNameFocusNode.unfocus();
-                            phoneNumberFocusNode.unfocus();
-                            referralFocusNode.unfocus();
+                            FocusScope.of(context).unfocus();
                             BlocProvider.of<RegistrationCubit>(context)
                                 .callRegister(
                               RegisterParams(
