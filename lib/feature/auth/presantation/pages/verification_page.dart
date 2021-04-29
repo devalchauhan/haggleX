@@ -1,4 +1,3 @@
-import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,7 +25,7 @@ class VerificationPage extends StatelessWidget {
                 duration: 3,
                 backgroundColor: Colors.red,
                 gravity: Toast.BOTTOM);
-          } else if(state is ResendSuccess){
+          } else if (state is ResendSuccess) {
             Toast.show("Verification code sent successfully", context,
                 duration: 3,
                 backgroundColor: Colors.green,

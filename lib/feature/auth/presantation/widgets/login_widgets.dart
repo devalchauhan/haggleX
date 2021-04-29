@@ -133,7 +133,7 @@ class LoginBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<LoginCubit, LoginState>(
       child: Container(
-        padding: EdgeInsets.all(30.0),
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,

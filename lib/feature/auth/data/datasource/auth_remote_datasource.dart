@@ -8,9 +8,6 @@ import 'package:hagglex/feature/auth/domain/entities/verify_user.dart';
 
 abstract class AuthRemoteDataSource {
   /// Throws a [AuthException] for all error codes.
-  Future<AuthUserModel> getCurrentUser();
-
-  /// Throws a [AuthException] for all error codes.
   Future<AuthUserModel> login(LoginUser loginUser);
 
   /// Throws a [AuthException] for all error codes.
@@ -31,16 +28,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   );
 
   @override
-  Future<AuthUserModel> getCurrentUser() {
-    // TODO: implement getCurrentUser
-    throw UnimplementedError();
-  }
-
-  @override
   Future<AuthUserModel> login(LoginUser loginUser) async {
     try {
-      print("Function call");
-
       const String login = r'''
         mutation Login($data: LoginInput!) {
           action: login(data: $data) {
@@ -69,8 +58,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           throw AuthException(error: gqlErrors.first.message);
         throw AuthException(error: 'Something went wrong');
       }
-      // final repositories = result.data['action']['user']['username'];
-      // print(repositories);
       AuthUserModel authUserModel = AuthUserModel.fromJson(result.data);
 
       return Future.value(authUserModel);
@@ -93,36 +80,14 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
     };
     _token = token;
-    final _httpLink = HttpLink(
-      URL,
-    );
-
-    final _authLink = AuthLink(
-      getToken: () async => 'Bearer $token',
-    );
-
-    Link _link = _authLink.concat(_httpLink);
-
-    final GraphQLClient client = GraphQLClient(
-      cache: GraphQLCache(store: HiveStore()),
-      link: _httpLink,
-    );
-    final QueryOptions options = QueryOptions(
+    QueryOptions(
       document: gql(sendVerification),
       variables: variable,
     );
-    final QueryResult result = await client.query(options);
-
-    if (result.hasException) {
-      print('devaldevalerror ${result.exception.toString()}');
-    }
-    print('devaldevalresult: ${result.data}');
   }
 
   Future<bool> resendVerificationCode(VerifyUser verifyUser) async {
     try {
-      print("Function call resend");
-
       const String resendVerification = r'''
       query ResendCode($data: EmailInput!) {
          resendVerificationCode(data:$data)
@@ -133,21 +98,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           "email": verifyUser.email,
         }
       };
-
-      /*final _httpLink = HttpLink(
-      URL,
-    );
-
-    /*final _authLink = AuthLink(
-      getToken: () async => 'Bearer $token',
-    );*/
-
-    //Link _link = _authLink.concat(_httpLink);
-
-    final GraphQLClient client = GraphQLClient(
-      cache: GraphQLCache(store: HiveStore()),
-      link: _link,
-    );*/
       final QueryOptions options = QueryOptions(
         document: gql(resendVerification),
         variables: variable,
@@ -155,16 +105,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final QueryResult result = await client.query(options);
 
       if (result.hasException) {
-        print('devaldevalerrorresend ${result.exception.toString()}');
         final gqlErrors = result.exception.graphqlErrors;
         if (gqlErrors != null) if (gqlErrors.length > 0)
           throw AuthException(error: gqlErrors.first.message);
         throw AuthException(error: 'Something went wrong');
       }
-      print('devaldevalresultresend: ${result.data}');
-
       bool resend = result.data['resendVerificationCode'];
-      print(resend);
       return Future.value(resend);
     } catch (e) {
       throw AuthException(error: e.error);
@@ -174,8 +120,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<AuthUserModel> register(RegisterUser registerUser) async {
     try {
-      print("Function call register");
-
       const String register = r'''
         mutation Register($data: CreateUserInput!) {
           action: register(data: $data) {
@@ -216,14 +160,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       QueryResult result = await gqRequest(register, variable);
       if (result.hasException) {
-        print(result.exception);
         final gqlErrors = result.exception.graphqlErrors;
         if (gqlErrors != null) if (gqlErrors.length > 0)
           throw AuthException(error: gqlErrors.first.message);
         throw AuthException(error: 'Something went wrong');
       }
-
-      print(result.data);
       AuthUserModel authUserModel = AuthUserModel.fromJson(result.data);
       sendVerificationCode(authUserModel.email, authUserModel.token);
       return Future.value(authUserModel);
@@ -235,8 +176,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<AuthUserModel> verify(VerifyUser verifyUser) async {
     try {
-      print("Function call verify");
-
       const String verify = r'''
         mutation Verify($data: VerifyUserInput!) {
           action: verifyUser(data: $data) {
@@ -281,18 +220,14 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         document: gql(verify),
         variables: variable,
       );
-      QueryResult result =  await client.mutate(options);
+      QueryResult result = await client.mutate(options);
 
-      // QueryResult result = await gqRequest(verify, variable);
       if (result.hasException) {
-        print(result.exception);
         final gqlErrors = result.exception.graphqlErrors;
         if (gqlErrors != null) if (gqlErrors.length > 0)
           throw AuthException(error: gqlErrors.first.message);
         throw AuthException(error: 'Something went wrong');
       }
-
-      print(result.data);
 
       return Future.value(AuthUserModel.fromJson(result.data));
     } catch (e) {

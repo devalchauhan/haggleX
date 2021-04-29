@@ -14,12 +14,6 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl({this.authRemoteDataSource});
 
   @override
-  Future<Either<Failure, AuthUser>> getCurrentUser() {
-    // TODO: implement getCurrentUser
-    throw UnimplementedError();
-  }
-
-  @override
   Future<Either<Failure, AuthUser>> login(LoginUser loginUser) async {
     try {
       final AuthUserModel _currentUser =

@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:hagglex/core/error/failures/failure.dart';
 import 'package:hagglex/feature/auth/data/model/auth_user_model.dart';
@@ -37,10 +35,6 @@ class VerifyCubit extends Cubit<VerifyState> {
       return;
     }
     emit(VerifyProcessing());
-
-   /* Timer(Duration(seconds: 2), () {
-      emit(Verified());
-    });*/
     final verifyFailedOrSuccess = await verify(verifyParams);
     verifyFailedOrSuccess.fold(
       (l) {

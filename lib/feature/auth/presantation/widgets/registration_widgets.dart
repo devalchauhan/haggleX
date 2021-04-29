@@ -242,7 +242,6 @@ class _RegistrationBodyState extends State<RegistrationBody> {
                           flex: 4,
                           child: InkWell(
                             onTap: () async {
-                              // Navigator.of(context).push(_createRoute());
                               final result = await Navigator.pushNamed(
                                   context, COUNTRIES_ROUTE);
                               if (result is Country) {
@@ -267,8 +266,6 @@ class _RegistrationBodyState extends State<RegistrationBody> {
                                     child: SvgPicture.network(
                                       country.flag,
                                       semanticsLabel: 'Country flag',
-                                      /*placeholderBuilder: (BuildContext context) => Container(
-                                    child: const CircularProgressIndicator()),*/
                                     ),
                                   ),
                                   Text(
@@ -318,7 +315,7 @@ class _RegistrationBodyState extends State<RegistrationBody> {
                     ),
                     BlocBuilder<RegistrationCubit, RegistrationState>(
                       builder: (context, state) {
-                        if(state is RegistrationProcessing){
+                        if (state is RegistrationProcessing) {
                           return Center(child: CircularProgressIndicator());
                         }
                         return RegistrationGradientButton(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hagglex/constants/text_style.dart';
 
 class MorePage extends StatelessWidget {
   @override
@@ -7,6 +8,7 @@ class MorePage extends StatelessWidget {
       child: Container(
         child: Text(
           'More',
+          style: kTextStyle,
         ),
       ),
     );

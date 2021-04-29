@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:hagglex/core/error/failures/failure.dart';
 import 'package:hagglex/core/usecases/usecase.dart';
-import 'package:hagglex/feature/auth/domain/entities/auth_user.dart';
 import 'package:hagglex/feature/auth/domain/repository/auth_repository.dart';
 import 'package:hagglex/feature/auth/domain/usecases/verify.dart';
 

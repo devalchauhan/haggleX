@@ -20,7 +20,6 @@ dependencies:
   flutter_svg: ^0.22.0
   graphql_flutter: ^4.0.1
   toast: ^0.1.5
-  cool_alert: ^1.0.3
 
 
 dev_dependencies:

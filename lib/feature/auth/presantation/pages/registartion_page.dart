@@ -1,4 +1,3 @@
-import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +13,6 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +21,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
           if (state is Registered) {
             Navigator.pushNamed(context, VERIFICATION_ROUTE,
                 arguments: state.authUserModel.email);
-          }  else if (state is RegistrationError) {
+          } else if (state is RegistrationError) {
             Toast.show(state.error, context,
                 duration: 3,
                 backgroundColor: Colors.red,

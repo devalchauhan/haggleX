@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hagglex/constants/text_style.dart';
 
 class TransferPage extends StatelessWidget {
   @override
@@ -7,6 +8,7 @@ class TransferPage extends StatelessWidget {
       child: Container(
         child: Text(
           'Transfer',
+          style: kTextStyle,
         ),
       ),
     );
