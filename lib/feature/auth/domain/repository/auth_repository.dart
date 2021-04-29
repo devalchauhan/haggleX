@@ -10,5 +10,5 @@ abstract class AuthRepository {
   Future<Either<Failure, AuthUser>> login(LoginUser loginUser);
   Future<Either<Failure, AuthUser>> register(RegisterUser registerUser);
   Future<Either<Failure, AuthUser>> verify(VerifyUser verifyUser);
-  Future<Either<Failure, AuthUser>> resendCode(VerifyUser verifyUser);
+  Future<Either<Failure, bool>> resendCode(VerifyUser verifyUser);
 }

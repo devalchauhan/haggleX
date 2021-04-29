@@ -16,7 +16,7 @@ Future<void> init() async {
   // Bloc
   sl.registerFactory(() => LoginCubit(login: sl()));
   sl.registerFactory(() => RegistrationCubit(register: sl()));
-  sl.registerFactory(() => VerifyCubit(verify: sl()));
+  sl.registerFactory(() => VerifyCubit(verify: sl(),resendCode: sl()));
 
   // Use cases
   sl.registerLazySingleton(() => Login(authRepository: sl()));
