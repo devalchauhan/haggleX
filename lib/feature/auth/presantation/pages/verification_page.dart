@@ -6,11 +6,11 @@ import 'package:hagglex/constants/string.dart';
 import 'package:hagglex/core/presentation/widget/background.dart';
 import 'package:hagglex/feature/auth/presantation/cubit/verify_cubit.dart';
 import 'package:hagglex/feature/auth/presantation/widgets/verification_widgets.dart';
+import 'package:toast/toast.dart';
 
 class VerificationPage extends StatelessWidget {
   final String email;
   final codeController = TextEditingController();
-  bool isLoading = false;
 
   VerificationPage({Key key, this.email}) : super(key: key);
 
@@ -22,22 +22,15 @@ class VerificationPage extends StatelessWidget {
           if (state is Verified) {
             Navigator.pushNamed(context, COMPLETE_SETUP_ROUTE);
           } else if (state is VerifyError) {
-            if (isLoading) {
-              Navigator.pop(context);
-              isLoading = false;
-            }
-            CoolAlert.show(
-              context: context,
-              type: CoolAlertType.error,
-              title: "Verification",
-              text: state.error,
-            );
-          } else if (state is VerifyProcessing) {
-            isLoading = true;
-            CoolAlert.show(
-              context: context,
-              type: CoolAlertType.loading,
-            );
+            Toast.show(state.error, context,
+                duration: 3,
+                backgroundColor: Colors.red,
+                gravity: Toast.BOTTOM);
+          } else if(state is ResendSuccess){
+            Toast.show("Verification code sent successfully", context,
+                duration: 3,
+                backgroundColor: Colors.green,
+                gravity: Toast.BOTTOM);
           }
         },
         child: Stack(

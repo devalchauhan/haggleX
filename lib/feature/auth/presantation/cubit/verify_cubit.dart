@@ -19,8 +19,7 @@ class VerifyCubit extends Cubit<VerifyState> {
   VerifyCubit({this.verify, this.resendCode}) : super(VerifyInitial());
 
   void callResendCode(VerifyParams verifyParams) async {
-    VerifyUser verifyUser = verifyParams.verifyUser;
-    //emit(VerifyProcessing());
+    emit(VerifyProcessing());
     final verifyFailedOrSuccess = await resendCode(verifyParams);
     verifyFailedOrSuccess.fold(
       (l) {
@@ -39,16 +38,16 @@ class VerifyCubit extends Cubit<VerifyState> {
     }
     emit(VerifyProcessing());
 
-    Timer(Duration(seconds: 2), () {
+   /* Timer(Duration(seconds: 2), () {
       emit(Verified());
-    });
-    /*final verifyFailedOrSuccess = await verify(verifyParams);
+    });*/
+    final verifyFailedOrSuccess = await verify(verifyParams);
     verifyFailedOrSuccess.fold(
       (l) {
         final failure = l as AuthFailure;
         emit(VerifyError(error: failure.error));
       },
       (r) => emit(Verified(authUserModel: r)),
-    );*/
+    );
   }
 }

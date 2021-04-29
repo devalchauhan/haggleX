@@ -316,35 +316,42 @@ class _RegistrationBodyState extends State<RegistrationBody> {
                     SizedBox(
                       height: 50.0,
                     ),
-                    RegistrationGradientButton(
-                      onClick: () {
-                        emailFocusNode.unfocus();
-                        passwordFocusNode.unfocus();
-                        userNameFocusNode.unfocus();
-                        phoneNumberFocusNode.unfocus();
-                        referralFocusNode.unfocus();
-                        BlocProvider.of<RegistrationCubit>(context)
-                            .callRegister(
-                          RegisterParams(
-                            registerUser: RegisterUser(
-                              email: emailController.text,
-                              password: passwordController.text,
-                              username: usernameController.text,
-                              phonenumber: phoneNumberController.text,
-                              currency: country.currency,
-                              country: country.name,
-                              referralCode: referralController.text,
-                              phoneNumberDetail: PhoneNumberDetail(
-                                phoneNumber: phoneNumberController.text,
-                                callingCode: country.code,
-                                flag: country.flag,
+                    BlocBuilder<RegistrationCubit, RegistrationState>(
+                      builder: (context, state) {
+                        if(state is RegistrationProcessing){
+                          return Center(child: CircularProgressIndicator());
+                        }
+                        return RegistrationGradientButton(
+                          onClick: () {
+                            emailFocusNode.unfocus();
+                            passwordFocusNode.unfocus();
+                            userNameFocusNode.unfocus();
+                            phoneNumberFocusNode.unfocus();
+                            referralFocusNode.unfocus();
+                            BlocProvider.of<RegistrationCubit>(context)
+                                .callRegister(
+                              RegisterParams(
+                                registerUser: RegisterUser(
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                  username: usernameController.text,
+                                  phonenumber: phoneNumberController.text,
+                                  currency: country.currency,
+                                  country: country.name,
+                                  referralCode: referralController.text,
+                                  phoneNumberDetail: PhoneNumberDetail(
+                                    phoneNumber: phoneNumberController.text,
+                                    callingCode: country.code,
+                                    flag: country.flag,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
+                            );
+                            // Navigator.pushNamed(context, VERIFICATION_ROUTE);
+                          },
+                          btnText: 'SIGN UP',
                         );
-                        // Navigator.pushNamed(context, VERIFICATION_ROUTE);
                       },
-                      btnText: 'SIGN UP',
                     ),
                   ],
                 ),

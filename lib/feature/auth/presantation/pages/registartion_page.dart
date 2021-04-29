@@ -6,6 +6,7 @@ import 'package:hagglex/constants/string.dart';
 import 'package:hagglex/core/presentation/widget/background.dart';
 import 'package:hagglex/feature/auth/presantation/cubit/registration_cubit.dart';
 import 'package:hagglex/feature/auth/presantation/widgets/registration_widgets.dart';
+import 'package:toast/toast.dart';
 
 class RegistrationPage extends StatefulWidget {
   @override
@@ -13,7 +14,6 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
-  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -21,25 +21,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
       body: BlocListener<RegistrationCubit, RegistrationState>(
         listener: (context, state) {
           if (state is Registered) {
-            Navigator.pushReplacementNamed(context, VERIFICATION_ROUTE,
+            Navigator.pushNamed(context, VERIFICATION_ROUTE,
                 arguments: state.authUserModel.email);
-          } else if (state is RegistrationProcessing) {
-            isLoading = true;
-            CoolAlert.show(
-              context: context,
-              type: CoolAlertType.loading,
-            );
-          } else if (state is RegistrationError) {
-            if (isLoading) {
-              Navigator.pop(context);
-              isLoading = false;
-            }
-            CoolAlert.show(
-              context: context,
-              type: CoolAlertType.error,
-              title: "Registration",
-              text: state.error,
-            );
+          }  else if (state is RegistrationError) {
+            Toast.show(state.error, context,
+                duration: 3,
+                backgroundColor: Colors.red,
+                gravity: Toast.BOTTOM);
           }
         },
         child: Stack(

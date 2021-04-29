@@ -10,6 +10,7 @@ import 'package:hagglex/feature/auth/presantation/widgets/registration_widgets.d
 class VerificationBody extends StatelessWidget {
   final String email;
   final codeController = TextEditingController();
+  final codeFocusNode = FocusNode();
 
   VerificationBody({Key key, this.email}) : super(key: key);
 
@@ -79,20 +80,30 @@ class VerificationBody extends StatelessWidget {
                       height: 50.0,
                     ),
                     RegistrationTextField(
+                      focusNode: codeFocusNode,
                       controller: codeController,
                       hintText: 'Verification code',
                     ),
                     SizedBox(
                       height: 50.0,
                     ),
-                    RegistrationGradientButton(
-                      onClick: () {
-                        BlocProvider.of<VerifyCubit>(context).callVerify(
-                            VerifyParams(
-                                verifyUser: VerifyUser(
-                                    email: email, code: codeController.text)));
+                    BlocBuilder<VerifyCubit, VerifyState>(
+                      builder: (context, state) {
+                        if (state is VerifyProcessing) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                        return RegistrationGradientButton(
+                          onClick: () {
+                            codeFocusNode.unfocus();
+                            BlocProvider.of<VerifyCubit>(context).callVerify(
+                                VerifyParams(
+                                    verifyUser: VerifyUser(
+                                        email: email,
+                                        code: codeController.text)));
+                          },
+                          btnText: 'VERIFY ME',
+                        );
                       },
-                      btnText: 'VERIFY ME',
                     ),
                     SizedBox(
                       height: 30.0,
