@@ -18,7 +18,8 @@ abstract class AuthRemoteDataSource {
 
   /// Throws a [DataBaseException] for all error codes.
   Future<AuthUserModel> verify(VerifyUser verifyUser);
-  Future<AuthUserModel> resendVerificationCode(VerifyUser verifyUser);
+
+  Future<bool> resendVerificationCode(VerifyUser verifyUser);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -78,6 +79,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     }
   }
 
+  String _token = '';
+
   Future<void> sendVerificationCode(String email, String token) async {
     const String sendVerification = r'''
       query SendCode($data: RedisVerifyCodeInput!) {
@@ -89,7 +92,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         "email": email,
       }
     };
-
+    _token = token;
     final _httpLink = HttpLink(
       URL,
     );
@@ -102,7 +105,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
     final GraphQLClient client = GraphQLClient(
       cache: GraphQLCache(store: HiveStore()),
-      link: _link,
+      link: _httpLink,
     );
     final QueryOptions options = QueryOptions(
       document: gql(sendVerification),
@@ -116,19 +119,22 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     print('devaldevalresult: ${result.data}');
   }
 
-  Future<AuthUserModel> resendVerificationCode(VerifyUser verifyUser) async {
-    const String resendVerification = r'''
+  Future<bool> resendVerificationCode(VerifyUser verifyUser) async {
+    try {
+      print("Function call resend");
+
+      const String resendVerification = r'''
       query ResendCode($data: EmailInput!) {
          resendVerificationCode(data:$data)
       }
       ''';
-    final variable = {
-      "data": {
-        "email": verifyUser.email,
-      }
-    };
+      final variable = {
+        "data": {
+          "email": verifyUser.email,
+        }
+      };
 
-    /*final _httpLink = HttpLink(
+      /*final _httpLink = HttpLink(
       URL,
     );
 
@@ -142,16 +148,27 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       cache: GraphQLCache(store: HiveStore()),
       link: _link,
     );*/
-    final QueryOptions options = QueryOptions(
-      document: gql(resendVerification),
-      variables: variable,
-    );
-    final QueryResult result = await client.query(options);
+      final QueryOptions options = QueryOptions(
+        document: gql(resendVerification),
+        variables: variable,
+      );
+      final QueryResult result = await client.query(options);
 
-    if (result.hasException) {
-      print('devaldevalerrorresend ${result.exception.toString()}');
+      if (result.hasException) {
+        print('devaldevalerrorresend ${result.exception.toString()}');
+        final gqlErrors = result.exception.graphqlErrors;
+        if (gqlErrors != null) if (gqlErrors.length > 0)
+          throw AuthException(error: gqlErrors.first.message);
+        throw AuthException(error: 'Something went wrong');
+      }
+      print('devaldevalresultresend: ${result.data}');
+
+      bool resend = result.data['resendVerificationCode'];
+      print(resend);
+      return Future.value(resend);
+    } catch (e) {
+      throw AuthException(error: e.error);
     }
-    print('devaldevalresultresend: ${result.data}');
   }
 
   @override
@@ -220,7 +237,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     try {
       print("Function call verify");
 
-      const String register = r'''
+      const String verify = r'''
         mutation Verify($data: VerifyUserInput!) {
           action: verifyUser(data: $data) {
                 user{
@@ -241,17 +258,38 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       final variable = {
         "data": {
-          "code": verifyUser.code,
+          "code": int.parse(verifyUser.code),
         }
       };
 
-      QueryResult result = await gqRequest(register, variable);
+      final _httpLink = HttpLink(
+        URL,
+      );
+
+      final _authLink = AuthLink(
+        getToken: () async => 'Bearer $_token',
+      );
+
+      Link _link = _authLink.concat(_httpLink);
+
+      final GraphQLClient client = GraphQLClient(
+        cache: GraphQLCache(store: HiveStore()),
+        link: _link,
+      );
+
+      final MutationOptions options = MutationOptions(
+        document: gql(verify),
+        variables: variable,
+      );
+      QueryResult result =  await client.mutate(options);
+
+      // QueryResult result = await gqRequest(verify, variable);
       if (result.hasException) {
         print(result.exception);
         final gqlErrors = result.exception.graphqlErrors;
         if (gqlErrors != null) if (gqlErrors.length > 0)
           throw AuthException(error: gqlErrors.first.message);
-        //throw AuthException(error: 'Something went wrong');
+        throw AuthException(error: 'Something went wrong');
       }
 
       print(result.data);
